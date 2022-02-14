@@ -43,13 +43,38 @@ function FuncComp(props) {
   );
 }
 
+var classStyle = 'color:red';
 class ClassComp extends React.Component{
   // * 클래스형 state
   state = {
     number:this.props.initNumber,
     date: (new Date()).toString()
   }
+  // * 클래스형 라이프 싸이클
+  // * 초기 로드시 순서
+  // * componentWillMount -> render -> componentDidMount
+  componentWillMount() {
+    console.log('%cclass => conponentWillMount', classStyle);
+  }
+  componentDidMount() {
+    console.log('%cclass => conponentDidMount', classStyle);
+  }
+
+  // * 업데이트시(setState) 순서
+  // * shouldComponentUpdate -> componentWillUpdate -> render -> componentDidUpdate
+  // * shouldComponentUpdate : setState시 props가 변경되었는지 감지해서 true일시 재렌더를 실행
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('%cclass => shouldComponentUpdate', classStyle);
+    return true;
+  }
+  componentWillUpdate(nextProps, nextState) {
+    console.log('%cclass => componentWillUpdate', classStyle);
+  }
+  componentDidUpdate(nextProps, nextState) {
+    console.log('%cclass => componentDidUpdate', classStyle);
+  }
   render() {
+    console.log('%cclass => render', classStyle);
     return (
       <div className='container'>
         <h2>class style component</h2>

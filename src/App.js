@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import './App.css';
 
 function App() {
@@ -11,6 +11,8 @@ function App() {
   );
 }
 
+var funcStyle = 'color:blue';
+var funcId = 0;
 function FuncComp(props) {
   // * 함수형 state
   var numberState = useState(props.initNumber);
@@ -23,7 +25,19 @@ function FuncComp(props) {
 
   // * 함수형 state 축약형
   var [_date, setDate] = useState((new Date()).toString());
+
+  // ! ++funcId를 하면 1씩이 아니라 2씩 증가합니다.
+  // ! index.js에서 <React.StrictMode>를 지우고 <App /> 뒤에 ,(쉼표)를 붙여주면 해결됩니다. 이 코드는 render()를 2번 실행하는 기능을 하며, 개발 단계에서만 작동하고 버그를 좀 더 일찍 잡을 수 있게 도와줍니다.
+  // * 함수형 라이프 싸이클
+  // * 초기 로드시 순서
+  // * render -> useEffect
+  // * 업데이트시(setState) 순서
+  // * render -> useEffect
+  useEffect(function() {
+    console.log('%cfunc => useEffect (componentDidMount & componentDidUpdate와 같은 효과) '+(++funcId), funcStyle);
+  })
   
+  console.log('%cfunc => render '+(++funcId), funcStyle);
   return (
     <div className='container'>
       <h2>function style component</h2>

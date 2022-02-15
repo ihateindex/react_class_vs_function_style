@@ -2,11 +2,24 @@ import React, {useState, useEffect} from 'react';
 import './App.css';
 
 function App() {
+  // * App에 버튼을 만들어 하위 컴포넌트를 show, hide하기
+  // * 변수 funcShow의 기본 값은 true;
+  var [funcShow, setFuncShow] = useState(true);
+  // * 변수 classShow의 기본 값은 true;
+  var [classShow, setClassShow] = useState(true);
   return (
     <div className="container">
       <h1>Hello World</h1>
-      <FuncComp initNumber={2}></FuncComp>
-      <ClassComp initNumber={2}></ClassComp>
+      <input type="button" value="remove func" onClick={function() {
+        setFuncShow(false);
+      }}></input>
+      <input type="button" value="remove comp" onClick={function() {
+        setClassShow(false);
+      }}></input>
+      {/* // * funcShow가 true면 FuncComp가 나타나고 false면 null이 되는 삼항연산자 */}
+      {funcShow ? <FuncComp initNumber={2}></FuncComp> : null}
+      {/* // * classShow true면 ClassComp가 나타나고 false면 null이 되는 삼항연산자 */}
+      {classShow ? <ClassComp initNumber={2}></ClassComp> : null}
     </div>
   );
 }
@@ -52,7 +65,7 @@ function FuncComp(props) {
   // * 그때 인자로 prevProps, prevState를 받는데 이를 이용하여 현재의 state와 prevState가 같지않을때만 추가 작업을 실행하게하여 불필요한 작업을 막아준다.
 
   // * 이를 skipping effect라고 한다.
-  
+
   // * 함수형식에서도 useEffect를 사용하여 skipping effect를 구현할 수 있는데, useEffect 사용시 첫번째 인자로는 function이 온다. 
   // * 그 뒤에 두번째 인자에 감시하고자 하는 state를 배열로 넣으면 해당 state가 변경될때만 useEffect가 실행된다.
   useEffect(function() {
@@ -125,6 +138,9 @@ class ClassComp extends React.Component{
   }
   componentDidUpdate(nextProps, nextState) {
     console.log('%cclass => componentDidUpdate', classStyle);
+  }
+  componentWillUnmount() {
+    console.log('%cclass => componentWillUnmount', classStyle);
   }
   render() {
     console.log('%cclass => render', classStyle);

@@ -33,8 +33,19 @@ function FuncComp(props) {
   // * render -> useEffect
   // * 업데이트시(setState) 순서
   // * render -> useEffect
+
+  // ? useEffect의 뜻은 use side effect의 줄임말이다. side effect인 이유는 main effect를 제외한 다른 effect를 뜻하는 것인데, 여기서 main effect는 리액트 라이프 싸이클의 render를 의미한다.
+  // ? 즉, side effect는 render를 제외한 componentDidMount, componentDidUpdate를 의미하는 것이다. 고로 useEffect == componentDidMount||componentDidUpdate 이다.
   useEffect(function() {
     console.log('%cfunc => useEffect (componentDidMount & componentDidUpdate와 같은 효과) '+(++funcId), funcStyle);
+    // * clean up (useEffect의 return)
+    // ? useEffect의 return은 리액트 라이프 싸이클의 componentWillUnmount와 같다.
+    // ? 컴포넌트를 마운트 후 useEffect로 무언가를 세팅한 뒤 컴포넌트를 언마운트할때 이제는 필요없어진 해당 컴포넌트의 세팅값등을 삭제해야할 필요가 있을 수 있다.
+    // ? 그럴때 이 부분에 세팅값을 삭제하는 코드를 넣어주어 말그대로 clean up해주는 것이다.
+    return function() {
+      console.log('%cfunc => useEffect return (componentDidMount & componentDidUpdate와 같은 효과) '+(++funcId), funcStyle);
+    }
+    // * END clean up
   })
   
   console.log('%cfunc => render '+(++funcId), funcStyle);
